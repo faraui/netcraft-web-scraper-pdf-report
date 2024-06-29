@@ -125,7 +125,8 @@ fi
 Xvfb :9222 &
 
 DISPLAY=:9222 $BROWSER \
---window-size=320x240 \
+--no-sandbox \
+--start-maximized \
 --ignore-certificate-errors \
 --disable-web-security \
 --allow-running-insecure-content \
