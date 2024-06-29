@@ -4,10 +4,21 @@ use Log::Log4perl qw(:easy);
 Log::Log4perl->easy_init($ERROR);
 use WWW::Mechanize::Chrome;
 
+my ($protocol, $domain);
+if ($ARGV[0] =~ m{^(https?)://([^/]+)}) {
+  $protocol = $1;
+  $domain = $2;
+} else {
+  $protocol = "https";
+  if ($ARGV[0] =~ m{^([^/]+)}) {
+    $domain = $1;
+  }
+}
+
 my $mech = WWW::Mechanize::Chrome->new(
    host => '127.0.0.1',
    port => 9222,
-   start_url => "https://sitereport.netcraft.com/?url=$ARGV[0]",
+   start_url => "https://sitereport.netcraft.com/?url=$protocol://$domain",
    autoclose => 0,
    separate_session => 1,
    startup_timeout => 10,
@@ -26,4 +37,4 @@ my $html = $mech->content();
    $html =~ s/wrapper.*?header class=//s;
    $html =~ s/<tr((?:(?!<tr).)*?)(not present|unknown).*?tr>//sig;
 $mech->update_html($html);
-$mech->content_as_pdf(filename => "$ARGV[0].pdf");
+$mech->content_as_pdf(filename => "$domain.pdf");
