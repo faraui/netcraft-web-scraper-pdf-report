@@ -1,16 +1,19 @@
 #!/bin/bash
-
 sudo echo -n
 
-if ! command -v perl > /dev/null || ! command -v Xvfb > /dev/null \
-|| ! command -v xwd > /dev/null || ! command -v convert > /dev/null
+URL=$1
+if [[ ! $URL =~ :// ]]
+then URL="https://$URL"
+fi
+
+if ! command -v perl > /dev/null || ! command -v Xvfb > /dev/null
 then echo -n 'Installing requirements ...' >&2
      if [ -f /etc/debian_version ]
-     then INSTALL='apt-get install -y perl Xvfb xwd ImageMagick'
+     then INSTALL='apt-get install -y perl Xvfb'
      elif [ -f /etc/redhat-release ]
-     then INSTALL='yum install -y perl xorg-x11-server-Xvfb xwd ImageMagick'
+     then INSTALL='yum install -y perl xorg-x11-server-Xvfb'
      elif [ -f /etc/arch-release ]
-     then INSTALL='pacman -Sy perl xorg-server-xvfb xwd ImageMagick --noconfirm'
+     then INSTALL='pacman -Sy perl xorg-server-xvfb --noconfirm'
      else echo ' FAIL' >&2
           echo 'Operating system cannot be identified' >&2
           exit 2
@@ -126,15 +129,17 @@ fi
 Xvfb :9222 &
 
 DISPLAY=:9222 $BROWSER \
+--window-size=320x240 \
+--ignore-certificate-errors \
+--disable-web-security \
+--allow-running-insecure-content \
+--load-extension \
+--password-store=basic \
 --disable-gpu \
 --disable-software-rasterizer \
 --remote-debugging-port=9222 \
 --remote-allow-origins=* 2> /dev/null &
 
-perl -I "$PWD/extlib/" scraper.pl
+perl -I "$PWD/extlib/" scraper.pl $URL
 
-DATE_STAMP=$(date -Iseconds)
-xwd -root -display :9222 -out cloudflare.xwd
-convert cloudflare.xwd cloudflare.png && \
-rm -rf cloudflare.xwd
 sudo pkill -f 'Xvfb :9222'
