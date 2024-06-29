@@ -23,5 +23,5 @@ chmod ugo+x main.sh
 ```
 
 ## Usage
-**./main.sh** [**http://**|**https://**]**example.org**
+**./main.sh** [**http://**|**https://**]**example.org**[*]
 > If no protocol is specified, **https** will be used.
