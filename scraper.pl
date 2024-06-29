@@ -1,30 +1,29 @@
 use strict;
 use warnings;
-use open qw(:std :encoding(UTF-8));
 use Log::Log4perl qw(:easy);
 Log::Log4perl->easy_init($ERROR);
 use WWW::Mechanize::Chrome;
 
 my $mech = WWW::Mechanize::Chrome->new(
-   host => '127.0.0.1',        # Host on which DevTools listens for commands
-   port => 9222,               # Port on which DevTools listens for commands
-   start_url => "about:blank", # Immediately navigate to a given address
-   autoclose => 0,             # Do not close browser at the end of execution
-   separate_session => 1,      # Create a new session without cookies
-   startup_timeout => 10,      # Time waiting for a browser to launch
-   autodie => 0,               # Treat HTTP errors as non-fatal
-   headless => 0,              # Disable browser built-in headless mode
-   mute_audio => 1,            # Disable audio channel
-   cleanup_signal => 'TERM',   # The signal that is sent to the browser to stop it
-);
+   host => '127.0.0.1',
+   port => 9222,
+   start_url => "https://sitereport.netcraft.com/?url=$ARGV[0]",
+   autoclose => 0,
+   separate_session => 1,
+   startup_timeout => 10,
+   autodie => 0,
+   headless => 0,
+   mute_audio => 1,
+   cleanup_signal => 'TERM'
+); $mech->sleep(10);
 
-print STDERR 'Web-scraper execution ...';
-
-$mech->get("https://www.cloudflare.com/");
-$mech->sleep(8);
-
-my $page_pdf = $mech->content_as_pdf(
-   filename => 'cloudflare.pdf',
-);
-
-print STDERR ' OK\n';
+my $html = $mech->content();
+   $html =~ s/<section class="banner center dark-gray">.*//s;
+   $html =~ s/<span class="section_links.*?span>//sg;
+   $html =~ s/ip_geolocation_section.*?section>//s;
+   $html =~ s/site_report_share.*?div>//s;
+   $html =~ s/page-header.*header>//s;
+   $html =~ s/wrapper.*?header class=//s;
+   $html =~ s/<tr((?:(?!<tr).)*?)(not present|unknown).*?tr>//sig;
+$mech->update_html($html);
+$mech->content_as_pdf(filename => "$ARGV[0].pdf");
