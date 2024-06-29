@@ -1,10 +1,6 @@
 #!/bin/bash
-sudo echo -n
 
-URL=$1
-if [[ ! $URL =~ :// ]]
-then URL="https://$URL"
-fi
+sudo echo -n
 
 if ! command -v perl > /dev/null || ! command -v Xvfb > /dev/null
 then echo -n 'Installing requirements ...' >&2
@@ -140,6 +136,6 @@ DISPLAY=:9222 $BROWSER \
 --remote-debugging-port=9222 \
 --remote-allow-origins=* 2> /dev/null &
 
-perl -I "$PWD/extlib/" scraper.pl $URL
+perl -I "$PWD/extlib/" scraper.pl $1
 
 sudo pkill -f 'Xvfb :9222'
