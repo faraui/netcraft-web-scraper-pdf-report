@@ -14,8 +14,8 @@
 
 ## Installation
 ```bash
-git clone -q https://github.com/faraui/cloudflare-bypass-headless-web-scraper.git && \
-cd cloudflare-bypass-headless-web-scraper && \
+git clone -q https://github.com/faraui/netcraft-web-scraper-pdf-report.git && \
+cd netcraft-web-scraper-pdf-report && \
 chmod ugo+x main.sh
 ```
 
