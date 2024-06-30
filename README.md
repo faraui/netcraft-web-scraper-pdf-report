@@ -4,11 +4,11 @@ Web-scraping [sitereport.netcraft.com](https://sitereport.netcraft.com) into PDF
 ## Structure
 ```diff
 [ 1.1M] netcraft-web-scraper-pdf-report
-!! [  753] LICENSE.txt
-~~ [ 4.5K] README.md
+!! [  754] LICENSE.txt
+~~ [  841] README.md
 ~~ [ 1.1M] extlib.tar.bz2
-++ [ 6.0K] main.sh
-~~ [ 1.0K] scraper.pl
+++ [ 5.0K] main.sh
+~~ [ 1.1K] scraper.pl
 
 5 files, 1 directory
 ```
