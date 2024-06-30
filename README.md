@@ -1,7 +1,5 @@
 # netcraft-web-scraper-pdf-report
-[report sample for Wikipedia](https://github.com/user-attachments/files/16042150/wikipedia.org.pdf).
-
-
+Web-scraping [sitereport.netcraft.com](https://sitereport.netcraft.com) into PDF format (see [result sample for Wikipedia](https://github.com/user-attachments/files/16042909/wikipedia.org.pdf)). Based on my [cloudflare-bypass-headless-web-scraper](https://github.com/faraui/cloudflare-bypass-headless-web-scraper).
 
 ## Structure
 ```diff
